@@ -13,9 +13,18 @@ class GameScene: SKScene {
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     private var redBall: SKShapeNode!
+    private var posX: CGFloat = 0
+    private var player: SKSpriteNode!
+    private var pWheel1: SKSpriteNode!
+    private var pWheel2: SKSpriteNode!
+    private var velX: CGFloat = 0
+    private var deltaT: Double = 0
+    private var lastFrameTime = TimeInterval()
+    private var lastPosX: CGFloat = 0
+    
     
     override func didMove(to view: SKView) {
-        
+                
         //self.setScale(UIScreen.main.bounds.size)
         
         // Get label node from scene and store it for use later
@@ -37,6 +46,7 @@ class GameScene: SKScene {
                                               SKAction.fadeOut(withDuration: 0.5),
                                               SKAction.removeFromParent()]))
         }
+        
         // Setup ground collision
         let groundRect = CGRect(x: -self.size.width/2, y: 0, width: self.size.width, height: self.size.height * 0.15)
         let ground = CreateWall(rect: groundRect)
@@ -73,7 +83,7 @@ class GameScene: SKScene {
         clouds2Scroller?.scroll()
         
         // Left and right walls
-        var gameRect = getVisibleScreen(sceneWidth: frame.width, sceneHeight: frame.height, viewWidth: view.bounds.width, viewHeight: view.bounds.height)
+        let gameRect = getThisVisibleScreen()
         let lWallRect = CGRect(x: -gameRect.width/2, y: 0, width: 1, height: self.size.height)
         let lWall = CreateWall(rect: lWallRect)
         self.addChild(lWall)
@@ -81,12 +91,24 @@ class GameScene: SKScene {
         let rWallRect = CGRect(x: gameRect.width/2, y: 0, width: 1, height: self.size.height)
         let rWall = CreateWall(rect: rWallRect)
         self.addChild(rWall)
+        
+        // Player
+        player = self.childNode(withName: "Cannon") as? SKSpriteNode
+        player.physicsBody?.affectedByGravity = true
+        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width, height: player.size.height + 80), center: CGPoint(x: 0, y: -20))
+        player.physicsBody?.allowsRotation = false
+        player.physicsBody?.affectedByGravity = false
+        player.physicsBody?.isDynamic = false
+        lastPosX = player.position.x
+        pWheel1 = player.childNode(withName: "Wheel1") as? SKSpriteNode
+        pWheel2 = player.childNode(withName: "Wheel2") as? SKSpriteNode
+        
     }
     
     func CreateWall(rect: CGRect) -> SKShapeNode {
         let wall = SKShapeNode(rect: rect)
-        wall.strokeColor = .red
-        wall.lineWidth = 4
+        //wall.strokeColor = .red
+        wall.lineWidth = 0
         wall.zPosition = 1
         wall.physicsBody = SKPhysicsBody(edgeChainFrom: wall.path!)
         wall.physicsBody?.restitution = 1
@@ -98,9 +120,11 @@ class GameScene: SKScene {
         if let n = self.spinnyNode?.copy() as! SKShapeNode? {
             n.position = pos
             n.strokeColor = SKColor.green
-            self.addChild(n)
+            //self.addChild(n)
             
-            redBall.physicsBody?.applyForce(CGVector(dx: -5000.0, dy: 0.0))
+            redBall.physicsBody?.applyForce(CGVector(dx: -5000.0, dy: 500.0))
+            
+            posX = pos.x
         }
     }
     
@@ -108,7 +132,9 @@ class GameScene: SKScene {
         if let n = self.spinnyNode?.copy() as! SKShapeNode? {
             n.position = pos
             n.strokeColor = SKColor.blue
-            self.addChild(n)
+            //self.addChild(n)
+            
+            posX = pos.x
         }
     }
     
@@ -116,7 +142,10 @@ class GameScene: SKScene {
         if let n = self.spinnyNode?.copy() as! SKShapeNode? {
             n.position = pos
             n.strokeColor = SKColor.red
-            self.addChild(n)
+            //self.addChild(n)
+            redBall.physicsBody?.applyForce(CGVector(dx: 2000.0, dy: 500.0))
+            
+            posX = pos.x
         }
     }
     
@@ -143,6 +172,31 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        deltaT = currentTime - lastFrameTime
+        
+        var currPosX = player.position.x
+        velX = (currPosX - lastPosX)/CGFloat(deltaT)
+        
+        pWheel1.zRotation += (-velX/100) * CGFloat(deltaT)
+        pWheel2.zRotation += (-velX/100) * CGFloat(deltaT)
+        
+        //Move player to position X
+        player.position.x = lerp(from: currPosX, to: posX, t: 0.2)
+        //Check bounds
+        let bounds = getThisVisibleScreen()
+        let playerWidth = player.size.width/2 + 37
+        if (player.position.x - playerWidth < -bounds.width/2) {
+            player.position.x = -bounds.width/2 + playerWidth
+        } else if (player.position.x + playerWidth > bounds.width/2) {
+            player.position.x = bounds.width/2 - playerWidth
+        }
+        
+        print("vel: " , velX)
+        lastFrameTime = currentTime
+        lastPosX = currPosX
+    }
+    func getThisVisibleScreen() -> CGRect {
+        return getVisibleScreen(sceneWidth: frame.width, sceneHeight: frame.height, viewWidth: view!.bounds.width, viewHeight: view!.bounds.height)
     }
     
     func getVisibleScreen(sceneWidth: CGFloat, sceneHeight: CGFloat, viewWidth: CGFloat, viewHeight: CGFloat) -> CGRect {
@@ -180,6 +234,15 @@ class GameScene: SKScene {
 
         let visibleScreenOffset = CGRect(x: CGFloat(x), y: CGFloat(y), width: CGFloat(sceneWidth), height: CGFloat(sceneHeight))
         return visibleScreenOffset
+    }
+    
+    func lerp(from: CGFloat, to: CGFloat, t: CGFloat) -> CGFloat
+    {
+        return from + (to - from) * t;
+    }
+    
+    func deg2rad(_ number: CGFloat) -> CGFloat {
+        return number * .pi / 180
     }
 
 }
