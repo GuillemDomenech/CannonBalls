@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34560FEE263B3A0100DC52E5 /* CollisionTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34560FED263B3A0100DC52E5 /* CollisionTypes.swift */; };
+		34560FF1263B676100DC52E5 /* PhysicsContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34560FF0263B676100DC52E5 /* PhysicsContacts.swift */; };
 		34791B742628C3FE00B9F21D /* UIColor+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34791B712628C33C00B9F21D /* UIColor+hex.swift */; };
 		34791B912628E6BD00B9F21D /* InfiniteScrollingBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34791B902628E6BD00B9F21D /* InfiniteScrollingBackground.swift */; };
 		34E0BBC12628B3AA00989BD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E0BBC02628B3AA00989BD2 /* AppDelegate.swift */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		34560FED263B3A0100DC52E5 /* CollisionTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionTypes.swift; sourceTree = "<group>"; };
+		34560FF0263B676100DC52E5 /* PhysicsContacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsContacts.swift; sourceTree = "<group>"; };
 		34791B712628C33C00B9F21D /* UIColor+hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+hex.swift"; sourceTree = "<group>"; };
 		34791B902628E6BD00B9F21D /* InfiniteScrollingBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteScrollingBackground.swift; sourceTree = "<group>"; };
 		34E0BBBD2628B3AA00989BD2 /* CannonBalls.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CannonBalls.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,10 +80,12 @@
 				34E0BBC22628B3AA00989BD2 /* GameScene.sks */,
 				34E0BBC42628B3AA00989BD2 /* Actions.sks */,
 				34E0BBC62628B3AA00989BD2 /* GameScene.swift */,
+				34560FF0263B676100DC52E5 /* PhysicsContacts.swift */,
 				34E0BBC82628B3AA00989BD2 /* GameViewController.swift */,
 				34E0BBCA2628B3AA00989BD2 /* Main.storyboard */,
 				34E0BBCD2628B3AC00989BD2 /* Assets.xcassets */,
 				34E0BBCF2628B3AC00989BD2 /* Info.plist */,
+				34560FED263B3A0100DC52E5 /* CollisionTypes.swift */,
 			);
 			path = CannonBalls;
 			sourceTree = "<group>";
@@ -157,9 +163,11 @@
 			files = (
 				34E0BBC72628B3AA00989BD2 /* GameScene.swift in Sources */,
 				34791B742628C3FE00B9F21D /* UIColor+hex.swift in Sources */,
+				34560FEE263B3A0100DC52E5 /* CollisionTypes.swift in Sources */,
 				34791B912628E6BD00B9F21D /* InfiniteScrollingBackground.swift in Sources */,
 				34E0BBC92628B3AA00989BD2 /* GameViewController.swift in Sources */,
 				34E0BBC12628B3AA00989BD2 /* AppDelegate.swift in Sources */,
+				34560FF1263B676100DC52E5 /* PhysicsContacts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +306,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 53YR959PCS;
 				INFOPLIST_FILE = CannonBalls/Info.plist;
@@ -307,6 +316,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fini.CannonBalls;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -317,6 +327,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 53YR959PCS;
 				INFOPLIST_FILE = CannonBalls/Info.plist;
@@ -326,6 +337,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fini.CannonBalls;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

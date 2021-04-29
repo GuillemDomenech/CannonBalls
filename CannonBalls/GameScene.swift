@@ -24,32 +24,14 @@ class GameScene: SKScene {
     
     
     override func didMove(to view: SKView) {
-                
-        //self.setScale(UIScreen.main.bounds.size)
-        
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
-        
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
-        
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
+        self.physicsWorld.contactDelegate = self
         
         // Setup ground collision
         let groundRect = CGRect(x: -self.size.width/2, y: 0, width: self.size.width, height: self.size.height * 0.15)
         let ground = CreateWall(rect: groundRect)
+        ground.physicsBody?.categoryBitMask = CollisionTypes.ground.rawValue
+        ground.physicsBody?.collisionBitMask = CollisionTypes.meteor.rawValue
+        ground.name = "Ground"
         self.addChild(ground)
         
         //Ball collision test
@@ -57,10 +39,35 @@ class GameScene: SKScene {
         redBall.fillColor = .red;
         redBall.position = CGPoint(x: 0, y: self.size.height * 0.9)
         redBall.physicsBody = SKPhysicsBody(circleOfRadius: 20)
-        redBall.physicsBody?.collisionBitMask = 0b0001
+        redBall.physicsBody?.categoryBitMask = CollisionTypes.meteor.rawValue
+        redBall.physicsBody?.collisionBitMask = CollisionTypes.ground.rawValue |
+            CollisionTypes.wall.rawValue | CollisionTypes.player.rawValue
+        redBall.physicsBody?.contactTestBitMask = CollisionTypes.ground.rawValue | CollisionTypes.wall.rawValue | CollisionTypes.player.rawValue | CollisionTypes.wall.rawValue
         redBall.physicsBody?.applyForce(CGVector(dx: -5000.0, dy: 0.0))
-        self.addChild(redBall)
-        redBall.name = "Ball"
+        redBall.name = "Meteor"
+        //self.addChild(redBall)
+        
+        // Create meteor
+        let meteor = SKSpriteNode(imageNamed: "meteor")
+        let bounds = getThisVisibleScreen()
+        meteor.position = CGPoint(x: 0, y: bounds.maxY*0.5)
+        meteor.physicsBody = SKPhysicsBody(circleOfRadius: meteor.size.width/2)
+        meteor.physicsBody?.categoryBitMask = CollisionTypes.meteor.rawValue
+        meteor.physicsBody?.collisionBitMask = CollisionTypes.ground.rawValue |
+            CollisionTypes.wall.rawValue | CollisionTypes.player.rawValue
+        meteor.physicsBody?.contactTestBitMask = CollisionTypes.ground.rawValue | CollisionTypes.wall.rawValue | CollisionTypes.player.rawValue
+        meteor.setScale(0.6)
+        meteor.name = "Meteor"
+        addChild(meteor)
+        let lives = SKLabelNode(text: "1")
+        lives.fontSize = 126
+        lives.fontName = "Arial-BoldMT"
+        lives.fontColor = SKColor.black
+        lives.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
+        lives.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.center
+        //lives.position = meteor.position
+        lives.zPosition = 1
+        meteor.addChild(lives)
         
         // Background clouds
         
@@ -86,19 +93,25 @@ class GameScene: SKScene {
         let gameRect = getThisVisibleScreen()
         let lWallRect = CGRect(x: -gameRect.width/2, y: 0, width: 1, height: self.size.height)
         let lWall = CreateWall(rect: lWallRect)
+        lWall.physicsBody?.categoryBitMask = CollisionTypes.wall.rawValue
+        lWall.name = "Wall"
         self.addChild(lWall)
         
         let rWallRect = CGRect(x: gameRect.width/2, y: 0, width: 1, height: self.size.height)
         let rWall = CreateWall(rect: rWallRect)
+        rWall.physicsBody?.categoryBitMask = CollisionTypes.wall.rawValue
+        rWall.name = "Wall"
         self.addChild(rWall)
         
         // Player
         player = self.childNode(withName: "Cannon") as? SKSpriteNode
         player.physicsBody?.affectedByGravity = true
-        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width, height: player.size.height + 80), center: CGPoint(x: 0, y: -20))
+        //player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width, height: player.size.height + 80), center: CGPoint(x: 0, y: -20))
         player.physicsBody?.allowsRotation = false
         player.physicsBody?.affectedByGravity = false
         player.physicsBody?.isDynamic = false
+        player.physicsBody?.categoryBitMask = CollisionTypes.player.rawValue
+        player.name = "Player"
         lastPosX = player.position.x
         pWheel1 = player.childNode(withName: "Wheel1") as? SKSpriteNode
         pWheel2 = player.childNode(withName: "Wheel2") as? SKSpriteNode
@@ -112,48 +125,26 @@ class GameScene: SKScene {
         wall.zPosition = 1
         wall.physicsBody = SKPhysicsBody(edgeChainFrom: wall.path!)
         wall.physicsBody?.restitution = 1
-        wall.physicsBody?.categoryBitMask = 0b0001
+        //wall.physicsBody?.categoryBitMask = 0b0001
         return wall
     }
     
     func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            //self.addChild(n)
-            
-            redBall.physicsBody?.applyForce(CGVector(dx: -5000.0, dy: 500.0))
-            
-            posX = pos.x
-        }
+        //redBall.physicsBody?.applyForce(CGVector(dx: -5000.0, dy: 500.0))
+        posX = pos.x
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            //self.addChild(n)
-            
-            posX = pos.x
-        }
+        posX = pos.x
     }
     
     func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            //self.addChild(n)
-            redBall.physicsBody?.applyForce(CGVector(dx: 2000.0, dy: 500.0))
-            
-            posX = pos.x
-        }
+        //redBall.physicsBody?.applyForce(CGVector(dx: 2000.0, dy: 500.0))
+        
+        posX = pos.x
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
-        
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {        
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
@@ -174,11 +165,12 @@ class GameScene: SKScene {
         // Called before each frame is rendered
         deltaT = currentTime - lastFrameTime
         
+        // Calculate velX to rotate wheels
         var currPosX = player.position.x
         velX = (currPosX - lastPosX)/CGFloat(deltaT)
         
-        pWheel1.zRotation += (-velX/100) * CGFloat(deltaT)
-        pWheel2.zRotation += (-velX/100) * CGFloat(deltaT)
+        pWheel1.zRotation += (-velX/80) * CGFloat(deltaT)
+        pWheel2.zRotation += (-velX/80) * CGFloat(deltaT)
         
         //Move player to position X
         player.position.x = lerp(from: currPosX, to: posX, t: 0.2)
@@ -190,8 +182,6 @@ class GameScene: SKScene {
         } else if (player.position.x + playerWidth > bounds.width/2) {
             player.position.x = bounds.width/2 - playerWidth
         }
-        
-        print("vel: " , velX)
         lastFrameTime = currentTime
         lastPosX = currPosX
     }
