@@ -11,4 +11,5 @@ enum CollisionTypes: UInt32 {
     case ground = 4
     case missile = 8
     case meteor = 16
+    case ceiling = 32
 }

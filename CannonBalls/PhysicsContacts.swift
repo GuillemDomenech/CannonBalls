@@ -20,8 +20,10 @@ extension GameScene: SKPhysicsContactDelegate {
         let oneNodeIsWall = nameA == "Wall" || nameB == "Wall"
         let oneNodeIsMeteor = nameA == "Meteor" || nameB == "Meteor"
         let oneNodeIsGround = nameA.hasPrefix("Ground") || nameB.hasPrefix("Ground")
+        let oneNodeIsMissile = nameA.hasPrefix("Missile") || nameB.hasPrefix("Missile")
+        let oneNodeIsCeiling = nameA.hasPrefix("Ceiling") || nameB.hasPrefix("Ceiling")
         
-        if oneNodeIsGround && oneNodeIsMeteor || oneNodeIsPlayer && oneNodeIsMeteor {
+        if oneNodeIsGround && oneNodeIsMeteor/* || oneNodeIsPlayer && oneNodeIsMeteor*/ {
             let node = nodeA.name == "Meteor" ? nodeA : nodeB
             let lowerBound = 1400
             let upperBound = 1800
@@ -36,6 +38,23 @@ extension GameScene: SKPhysicsContactDelegate {
             node.physicsBody!.velocity = CGVector(dx: 300.0*multiplier, dy: node.physicsBody!.velocity.dy)
             //node.physicsBody?.applyTorque(-333800.0*multiplier)
             node.physicsBody?.applyAngularImpulse(-15.0*multiplier)
+        }
+        
+        if oneNodeIsMissile && oneNodeIsMeteor {
+            let missileNode = nodeA.name == "Missile" ? nodeA : nodeB
+            let meteorNode = (nodeA.name == "Meteor" ? nodeA : nodeB) as! Meteor
+            missileNode.removeFromParent()
+            meteorNode.Hit()
+        }
+        
+        if oneNodeIsCeiling && oneNodeIsMissile {
+            let missileNode = nodeA.name == "Missile" ? nodeA : nodeB
+            missileNode.removeFromParent()
+        }
+        
+        if oneNodeIsPlayer && oneNodeIsMeteor {
+            // Game Over
+            print("Game Over")
         }
         
         

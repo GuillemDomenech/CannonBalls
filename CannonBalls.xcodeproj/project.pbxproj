@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		343F0C4C263C44380032EFEC /* Meteor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F0C4B263C44380032EFEC /* Meteor.swift */; };
 		34560FEE263B3A0100DC52E5 /* CollisionTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34560FED263B3A0100DC52E5 /* CollisionTypes.swift */; };
 		34560FF1263B676100DC52E5 /* PhysicsContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34560FF0263B676100DC52E5 /* PhysicsContacts.swift */; };
 		34791B742628C3FE00B9F21D /* UIColor+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34791B712628C33C00B9F21D /* UIColor+hex.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		343F0C4B263C44380032EFEC /* Meteor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meteor.swift; sourceTree = "<group>"; };
 		34560FED263B3A0100DC52E5 /* CollisionTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionTypes.swift; sourceTree = "<group>"; };
 		34560FF0263B676100DC52E5 /* PhysicsContacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsContacts.swift; sourceTree = "<group>"; };
 		34791B712628C33C00B9F21D /* UIColor+hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+hex.swift"; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				34E0BBCD2628B3AC00989BD2 /* Assets.xcassets */,
 				34E0BBCF2628B3AC00989BD2 /* Info.plist */,
 				34560FED263B3A0100DC52E5 /* CollisionTypes.swift */,
+				343F0C4B263C44380032EFEC /* Meteor.swift */,
 			);
 			path = CannonBalls;
 			sourceTree = "<group>";
@@ -164,6 +167,7 @@
 				34E0BBC72628B3AA00989BD2 /* GameScene.swift in Sources */,
 				34791B742628C3FE00B9F21D /* UIColor+hex.swift in Sources */,
 				34560FEE263B3A0100DC52E5 /* CollisionTypes.swift in Sources */,
+				343F0C4C263C44380032EFEC /* Meteor.swift in Sources */,
 				34791B912628E6BD00B9F21D /* InfiniteScrollingBackground.swift in Sources */,
 				34E0BBC92628B3AA00989BD2 /* GameViewController.swift in Sources */,
 				34E0BBC12628B3AA00989BD2 /* AppDelegate.swift in Sources */,

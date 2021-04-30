@@ -22,9 +22,18 @@ class GameScene: SKScene {
     private var lastFrameTime = TimeInterval()
     private var lastPosX: CGFloat = 0
     
+    private var lastShootTime: Double = 0.0
+    private var shootingFrecuency: Double = 30.5 // How many shots per second
+    
+    private var lastMeteorSpawnTime: Double = 0.0
+    private var meteorSpawningDelay: Double = 5 // How many shots per second
+    
+    private var isPressingDown: Bool = false
+    
     
     override func didMove(to view: SKView) {
         self.physicsWorld.contactDelegate = self
+        let bounds = getThisVisibleScreen()
         
         // Setup ground collision
         let groundRect = CGRect(x: -self.size.width/2, y: 0, width: self.size.width, height: self.size.height * 0.15)
@@ -33,6 +42,13 @@ class GameScene: SKScene {
         ground.physicsBody?.collisionBitMask = CollisionTypes.meteor.rawValue
         ground.name = "Ground"
         self.addChild(ground)
+        
+        let ceilingRect = CGRect(x: -self.size.width/2, y: bounds.maxY, width: self.size.width, height: self.size.height * 0.15)
+        let ceiling = CreateWall(rect: ceilingRect)
+        ceiling.physicsBody?.categoryBitMask = CollisionTypes.ceiling.rawValue
+        ceiling.physicsBody?.contactTestBitMask = CollisionTypes.missile.rawValue
+        ceiling.name = "Ceiling"
+        self.addChild(ceiling)
         
         //Ball collision test
         redBall = SKShapeNode(circleOfRadius: 20)
@@ -45,29 +61,6 @@ class GameScene: SKScene {
         redBall.physicsBody?.contactTestBitMask = CollisionTypes.ground.rawValue | CollisionTypes.wall.rawValue | CollisionTypes.player.rawValue | CollisionTypes.wall.rawValue
         redBall.physicsBody?.applyForce(CGVector(dx: -5000.0, dy: 0.0))
         redBall.name = "Meteor"
-        //self.addChild(redBall)
-        
-        // Create meteor
-        let meteor = SKSpriteNode(imageNamed: "meteor")
-        let bounds = getThisVisibleScreen()
-        meteor.position = CGPoint(x: 0, y: bounds.maxY*0.5)
-        meteor.physicsBody = SKPhysicsBody(circleOfRadius: meteor.size.width/2)
-        meteor.physicsBody?.categoryBitMask = CollisionTypes.meteor.rawValue
-        meteor.physicsBody?.collisionBitMask = CollisionTypes.ground.rawValue |
-            CollisionTypes.wall.rawValue | CollisionTypes.player.rawValue
-        meteor.physicsBody?.contactTestBitMask = CollisionTypes.ground.rawValue | CollisionTypes.wall.rawValue | CollisionTypes.player.rawValue
-        meteor.setScale(0.6)
-        meteor.name = "Meteor"
-        addChild(meteor)
-        let lives = SKLabelNode(text: "1")
-        lives.fontSize = 126
-        lives.fontName = "Arial-BoldMT"
-        lives.fontColor = SKColor.black
-        lives.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
-        lives.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.center
-        //lives.position = meteor.position
-        lives.zPosition = 1
-        meteor.addChild(lives)
         
         // Background clouds
         
@@ -77,7 +70,7 @@ class GameScene: SKScene {
             $0.xScale = 0.4
             $0.yScale = 0.4
         }
-        clouds1Scroller?.zPosition = 0
+        clouds1Scroller?.zPosition = -1
         clouds1Scroller?.scroll()
         
         let clouds2 = UIImage(named: "clouds2")!
@@ -115,7 +108,7 @@ class GameScene: SKScene {
         lastPosX = player.position.x
         pWheel1 = player.childNode(withName: "Wheel1") as? SKSpriteNode
         pWheel2 = player.childNode(withName: "Wheel2") as? SKSpriteNode
-        
+
     }
     
     func CreateWall(rect: CGRect) -> SKShapeNode {
@@ -132,16 +125,19 @@ class GameScene: SKScene {
     func touchDown(atPoint pos : CGPoint) {
         //redBall.physicsBody?.applyForce(CGVector(dx: -5000.0, dy: 500.0))
         posX = pos.x
+        isPressingDown = true
     }
     
     func touchMoved(toPoint pos : CGPoint) {
         posX = pos.x
+        isPressingDown = true
     }
     
     func touchUp(atPoint pos : CGPoint) {
         //redBall.physicsBody?.applyForce(CGVector(dx: 2000.0, dy: 500.0))
         
         posX = pos.x
+        isPressingDown = false
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {        
@@ -184,7 +180,42 @@ class GameScene: SKScene {
         }
         lastFrameTime = currentTime
         lastPosX = currPosX
+        
+        // Check if should shoot
+        if ((currentTime - lastShootTime) > 1.0/shootingFrecuency && isPressingDown) {
+            ShootMisile()
+            lastShootTime = currentTime
+        }
+        
+        if((currentTime - lastMeteorSpawnTime) > meteorSpawningDelay) {
+            SpawnMeteor()
+            lastMeteorSpawnTime = currentTime
+        }
+        
     }
+    
+    func SpawnMeteor() {
+        let bounds = getThisVisibleScreen()
+        let meteor = Meteor(pos: CGPoint(x: 0, y: bounds.maxY*0.8), scale: 0.6, col: .red, sceneRef: self, sideSpawn: true, shouldSplit: true)
+    }
+    
+    func ShootMisile() {
+        let sprite = SKSpriteNode(imageNamed: "missile")
+        sprite.position = CGPoint(x: player.frame.midX, y: player.frame.maxY)
+        sprite.name = "Missile"
+        sprite.zPosition = 1
+        sprite.physicsBody = SKPhysicsBody(texture: sprite.texture!, size: sprite.size)
+        sprite.physicsBody?.velocity = CGVector(dx: 0, dy: 1300)
+        sprite.physicsBody?.affectedByGravity = false
+        sprite.physicsBody?.linearDamping = 0
+        sprite.physicsBody?.categoryBitMask = CollisionTypes.missile.rawValue
+        sprite.physicsBody?.collisionBitMask = 0
+        sprite.physicsBody?.contactTestBitMask = CollisionTypes.meteor.rawValue
+        addChild(sprite)
+        
+        
+    }
+    
     func getThisVisibleScreen() -> CGRect {
         return getVisibleScreen(sceneWidth: frame.width, sceneHeight: frame.height, viewWidth: view!.bounds.width, viewHeight: view!.bounds.height)
     }
