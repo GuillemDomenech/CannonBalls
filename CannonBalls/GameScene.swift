@@ -23,12 +23,12 @@ class GameScene: SKScene {
     private var lastPosX: CGFloat = 0
     
     private var lastShootTime: Double = 0.0
-    private var shootingFrecuency: Double = 30.5 // How many shots per second
+    public var shootingFrecuency: Double = 10.5 // How many shots per second
     
-    private var lastMeteorSpawnTime: Double = 0.0
-    private var meteorSpawningDelay: Double = 5 // How many shots per second
     
     private var isPressingDown: Bool = false
+    
+    public var gameDirector: GameDirector!
     
     
     override func didMove(to view: SKView) {
@@ -108,7 +108,8 @@ class GameScene: SKScene {
         lastPosX = player.position.x
         pWheel1 = player.childNode(withName: "Wheel1") as? SKSpriteNode
         pWheel2 = player.childNode(withName: "Wheel2") as? SKSpriteNode
-
+        
+        gameDirector = GameDirector(_sceneRef: self)
     }
     
     func CreateWall(rect: CGRect) -> SKShapeNode {
@@ -161,8 +162,10 @@ class GameScene: SKScene {
         // Called before each frame is rendered
         deltaT = currentTime - lastFrameTime
         
+        gameDirector.update(currentTime: currentTime)
+        
         // Calculate velX to rotate wheels
-        var currPosX = player.position.x
+        let currPosX = player.position.x
         velX = (currPosX - lastPosX)/CGFloat(deltaT)
         
         pWheel1.zRotation += (-velX/80) * CGFloat(deltaT)
@@ -187,17 +190,10 @@ class GameScene: SKScene {
             lastShootTime = currentTime
         }
         
-        if((currentTime - lastMeteorSpawnTime) > meteorSpawningDelay) {
-            SpawnMeteor()
-            lastMeteorSpawnTime = currentTime
-        }
         
     }
     
-    func SpawnMeteor() {
-        let bounds = getThisVisibleScreen()
-        let meteor = Meteor(pos: CGPoint(x: 0, y: bounds.maxY*0.8), scale: 0.6, col: .red, sceneRef: self, sideSpawn: true, shouldSplit: true)
-    }
+    
     
     func ShootMisile() {
         let sprite = SKSpriteNode(imageNamed: "missile")
