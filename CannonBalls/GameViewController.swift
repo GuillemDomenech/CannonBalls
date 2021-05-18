@@ -10,7 +10,10 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-
+    var currentGame: GameScene?
+    
+    @IBOutlet weak var scoreLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,6 +24,9 @@ class GameViewController: UIViewController {
                 scene.scaleMode = .aspectFill
                 scene.backgroundColor = UIColor(hex: 0xCDE6F8)
                 
+                
+                currentGame = scene as? GameScene
+                currentGame?.viewController = self
                 
                 // Present the scene
                 view.presentScene(scene)
@@ -47,5 +53,9 @@ class GameViewController: UIViewController {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    func setScore(score: Int) {
+        scoreLabel.text = String(score)
     }
 }

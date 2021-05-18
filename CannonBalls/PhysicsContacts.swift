@@ -45,6 +45,8 @@ extension GameScene: SKPhysicsContactDelegate {
             let meteorNode = (nodeA.name == "Meteor" ? nodeA : nodeB) as! Meteor
             missileNode.removeFromParent()
             meteorNode.Hit()
+            score = score + 1
+            viewController?.setScore(score: score)
         }
         
         if oneNodeIsCeiling && oneNodeIsMissile {

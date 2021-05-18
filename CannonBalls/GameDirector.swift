@@ -23,7 +23,7 @@ class GameDirector {
     public var minMeteorHits: Int = 2
     
     public var maxMeteorScale: Float = 0.9
-    public var minMeteorScale: Float = 0.35
+    public var minMeteorScale: Float = 0.45
     
     private var currentMaxSplitCount: Int = 1
     private var currentMinSplitCount: Int = 0

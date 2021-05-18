@@ -10,6 +10,8 @@ import GameplayKit
 
 class GameScene: SKScene {
     
+    weak public var viewController: GameViewController?
+    
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     private var redBall: SKShapeNode!
@@ -21,6 +23,8 @@ class GameScene: SKScene {
     private var deltaT: Double = 0
     private var lastFrameTime = TimeInterval()
     private var lastPosX: CGFloat = 0
+    
+    public var score: Int = 0
     
     private var lastShootTime: Double = 0.0
     public var shootingFrecuency: Double = 10.5 // How many shots per second
@@ -109,7 +113,8 @@ class GameScene: SKScene {
         pWheel1 = player.childNode(withName: "Wheel1") as? SKSpriteNode
         pWheel2 = player.childNode(withName: "Wheel2") as? SKSpriteNode
         
-        gameDirector = GameDirector(_sceneRef: self)
+        gameDirector = GameDirector(_sceneRef: self)        
+        viewController?.setScore(score: score)
     }
     
     func CreateWall(rect: CGRect) -> SKShapeNode {
