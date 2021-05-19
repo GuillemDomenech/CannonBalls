@@ -74,7 +74,9 @@ class GameDirector {
         // Calculate split count
         let splitCount = Int.random(in: currentMinSplitCount...currentMaxSplitCount)
         
-        let _ = Meteor(pos: CGPoint(x: randPosX, y: bounds.maxY*0.8), scale: CGFloat(scale), col: .red, totalLives: meteorLives,  sceneRef: sceneRef, sideSpawn: true, splitCount: splitCount)
+        let color = UtilFunctions.getRandomColor()
+        
+        let _ = Meteor(pos: CGPoint(x: randPosX, y: bounds.maxY*0.8), scale: CGFloat(scale), col: color, totalLives: meteorLives,  sceneRef: sceneRef, sideSpawn: true, splitCount: splitCount)
     }
     
     func handleIncreaseDifficulty() {

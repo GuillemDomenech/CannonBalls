@@ -99,8 +99,10 @@ class Meteor: SKSpriteNode {
             // Calculate meteor scale based on lives
             let scale = UtilFunctions.map(x: Float(meteorLives), in_min: Float(sceneRef.gameDirector.minMeteorHits), in_max: Float(sceneRef.gameDirector.maxMeteorHits), out_min: Float(sceneRef.gameDirector.minMeteorScale), out_max: Float(xScale))
             
-            let meteor1 = Meteor(pos: position, scale: CGFloat(scale), col: .blue, totalLives: meteorLives, sceneRef: sceneRef, splitCount: self.splitCount-1)
-            let meteor2 = Meteor(pos: position, scale: CGFloat(scale), col: .blue, totalLives: meteorLives, sceneRef: sceneRef, splitCount: self.splitCount-1)
+            let color = UtilFunctions.getRandomColor()
+            
+            let meteor1 = Meteor(pos: position, scale: CGFloat(scale), col: color, totalLives: meteorLives, sceneRef: sceneRef, splitCount: self.splitCount-1)
+            let meteor2 = Meteor(pos: position, scale: CGFloat(scale), col: color, totalLives: meteorLives, sceneRef: sceneRef, splitCount: self.splitCount-1)
             
             // Give impulse to the spawned meteors
             let xImp: CGFloat = 2500
