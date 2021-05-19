@@ -34,6 +34,8 @@ class GameScene: SKScene {
     
     public var gameDirector: GameDirector!
     
+    public var audioPlayer: AudioPlayer!
+    
     
     override func didMove(to view: SKView) {
         self.physicsWorld.contactDelegate = self
@@ -113,7 +115,8 @@ class GameScene: SKScene {
         pWheel1 = player.childNode(withName: "Wheel1") as? SKSpriteNode
         pWheel2 = player.childNode(withName: "Wheel2") as? SKSpriteNode
         
-        gameDirector = GameDirector(_sceneRef: self)        
+        gameDirector = GameDirector(_sceneRef: self)
+        audioPlayer = AudioPlayer(gameScene: self)
         viewController?.setScore(score: score)
     }
     
@@ -214,6 +217,7 @@ class GameScene: SKScene {
         sprite.physicsBody?.contactTestBitMask = CollisionTypes.meteor.rawValue
         addChild(sprite)
         
+        audioPlayer.playShootSound()
         
     }
     

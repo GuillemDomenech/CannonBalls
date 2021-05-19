@@ -47,6 +47,7 @@ extension GameScene: SKPhysicsContactDelegate {
             meteorNode.Hit()
             score = score + 1
             viewController?.setScore(score: score)
+            audioPlayer.playHitSound()
         }
         
         if oneNodeIsCeiling && oneNodeIsMissile {

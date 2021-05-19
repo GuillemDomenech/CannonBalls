@@ -111,7 +111,7 @@ class Meteor: SKSpriteNode {
             meteor2.physicsBody?.applyImpulse(vec2)
         }
         
-        
+        sceneRef.audioPlayer.playSplitSound()
         
         self.removeFromParent()
     }
