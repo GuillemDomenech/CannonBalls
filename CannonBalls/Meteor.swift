@@ -17,6 +17,8 @@ class Meteor: SKSpriteNode {
     let sceneRef: GameScene
     let splitCount: Int
     
+    static var lastZPos: Int = 1
+    
     init(pos: CGPoint, scale: CGFloat, col: SKColor, totalLives: Int = 5, sceneRef: GameScene, sideSpawn: Bool = false, splitCount: Int) {
         let pos = pos
         let scale = scale
@@ -25,6 +27,9 @@ class Meteor: SKSpriteNode {
         livesAtStart = totalLives
         self.sceneRef = sceneRef
         self.splitCount = splitCount
+        
+        Meteor.lastZPos += 1
+        
         // Create meteor
         let texture = SKTexture(imageNamed: "meteor")
         super.init(texture: texture , color: col, size: texture.size())
@@ -37,6 +42,8 @@ class Meteor: SKSpriteNode {
         self.setScale(scale)
         self.name = "Meteor"
         
+        self.zPosition = CGFloat(Meteor.lastZPos)
+        
         // Create lives text
         livesText = SKLabelNode(text: String(totalLives))
         livesText.fontSize = 186
@@ -44,7 +51,7 @@ class Meteor: SKSpriteNode {
         livesText.fontColor = SKColor.white
         livesText.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
         livesText.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.center
-        livesText.zPosition = 1
+        livesText.zPosition = 0.1
         self.addChild(livesText)
         
         if sideSpawn {
@@ -63,10 +70,14 @@ class Meteor: SKSpriteNode {
             self.physicsBody?.collisionBitMask &= ~CollisionTypes.wall.rawValue
             self.physicsBody?.contactTestBitMask &= ~CollisionTypes.wall.rawValue
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.3*Double(xScale)) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5*Double(xScale)) {
                 self.physicsBody?.affectedByGravity = true
                 self.physicsBody?.collisionBitMask |= CollisionTypes.wall.rawValue
                 self.physicsBody?.contactTestBitMask |= CollisionTypes.wall.rawValue
+                
+                let multiplier: CGFloat = self.position.x > 0 ? -1 : 1
+                //node.physicsBody?.applyTorque(-333800.0*multiplier)
+                self.physicsBody?.applyAngularImpulse(-5.0*multiplier)
             }
         }
         

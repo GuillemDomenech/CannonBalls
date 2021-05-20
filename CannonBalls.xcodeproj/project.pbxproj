@@ -19,6 +19,7 @@
 		34974B892656BBE500919A69 /* FeedbackGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34974B882656BBE500919A69 /* FeedbackGenerator.swift */; };
 		34A788A426558F7E00EDE0BA /* shoot.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34A788A326558F7E00EDE0BA /* shoot.mp3 */; };
 		34A788A7265590F600EDE0BA /* hit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34A788A6265590F600EDE0BA /* hit.mp3 */; };
+		34DBBBB026571F2700646346 /* loose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34DBBBAF26571F2700646346 /* loose.mp3 */; };
 		34DD60A32655B42E005F7230 /* split.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 34DD60A22655B42E005F7230 /* split.mp3 */; };
 		34E0BBC12628B3AA00989BD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E0BBC02628B3AA00989BD2 /* AppDelegate.swift */; };
 		34E0BBC52628B3AA00989BD2 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 34E0BBC42628B3AA00989BD2 /* Actions.sks */; };
@@ -41,6 +42,7 @@
 		34974B882656BBE500919A69 /* FeedbackGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackGenerator.swift; sourceTree = "<group>"; };
 		34A788A326558F7E00EDE0BA /* shoot.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shoot.mp3; sourceTree = "<group>"; };
 		34A788A6265590F600EDE0BA /* hit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hit.mp3; sourceTree = "<group>"; };
+		34DBBBAF26571F2700646346 /* loose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = loose.mp3; sourceTree = "<group>"; };
 		34DD60A22655B42E005F7230 /* split.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = split.mp3; sourceTree = "<group>"; };
 		34E0BBBD2628B3AA00989BD2 /* CannonBalls.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CannonBalls.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34E0BBC02628B3AA00989BD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			children = (
 				34DD60A22655B42E005F7230 /* split.mp3 */,
 				34A788A326558F7E00EDE0BA /* shoot.mp3 */,
+				34DBBBAF26571F2700646346 /* loose.mp3 */,
 				34A788A6265590F600EDE0BA /* hit.mp3 */,
 			);
 			path = Sounds;
@@ -180,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				34A788A7265590F600EDE0BA /* hit.mp3 in Resources */,
+				34DBBBB026571F2700646346 /* loose.mp3 in Resources */,
 				34E0BBCC2628B3AA00989BD2 /* Main.storyboard in Resources */,
 				34A788A426558F7E00EDE0BA /* shoot.mp3 in Resources */,
 				34E0BBCE2628B3AC00989BD2 /* Assets.xcassets in Resources */,

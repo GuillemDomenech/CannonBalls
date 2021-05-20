@@ -15,11 +15,13 @@ class AudioPlayer {
     var shootSound: SKAction
     var hitSound: SKAction
     var splitSound: SKAction
+    var looseSound: SKAction
 
     init(gameScene: GameScene) {
-        shootSound = SKAction.playSoundFileNamed("shoot", waitForCompletion: false)
-        hitSound = SKAction.playSoundFileNamed("hit", waitForCompletion: false)
-        splitSound = SKAction.playSoundFileNamed("split", waitForCompletion: false)
+        shootSound = SKAction.playSoundFileNamed("shoot.mp3", waitForCompletion: false)
+        hitSound = SKAction.playSoundFileNamed("hit.mp3", waitForCompletion: false)
+        splitSound = SKAction.playSoundFileNamed("split.mp3", waitForCompletion: false)
+        looseSound = SKAction.playSoundFileNamed("loose.mp3", waitForCompletion: false)
         self.gameScene = gameScene
     }
     
@@ -35,4 +37,7 @@ class AudioPlayer {
         gameScene.run(splitSound)        
     }
     
+    func playLooseSound() {
+        gameScene.run(looseSound)
+    }
 }

@@ -21,4 +21,15 @@ class UtilFunctions {
     public static func getRandomColor() -> SKColor {
         return SKColor(hue: CGFloat(arc4random_uniform(255))/255.0, saturation: 1.0, brightness: 1.0, alpha: 1.0)
     }
+    
+    public static func transitionView(_ view: UIView?, show: Bool, duration: Double = 0.4, completion: ((Bool) -> Void)? = nil) {
+        guard let view = view, view.isHidden == show, let parent = view.superview else {
+            return
+        }
+        
+        let target: UIView = show ? view : parent
+        UIView.transition(with: target, duration: duration, options: [.transitionCrossDissolve], animations: {
+            view.isHidden = !show
+        }, completion: completion)
+    }
 }

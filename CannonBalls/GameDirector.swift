@@ -40,6 +40,17 @@ class GameDirector {
         matchStartTime = currentFrameTime
     }
     
+    func resetDifficulty() {
+        currentMaxSplitCount = 1
+        currentMinSplitCount = 0
+        maxMeteorHits = 30
+        minFirstMeteorHits = 4
+        minMeteorHits = 2
+        difficultyLevel = 0
+        meteorSpawningDelay = 10
+        sceneRef.shootingFrecuency = 10.5
+    }
+    
     
     public func update(currentTime: TimeInterval) {
         currentFrameTime = currentTime
@@ -96,7 +107,7 @@ class GameDirector {
     
     func changeDifficulty(newDiff: Int) {
         difficultyLevel = newDiff
-        print("Incresing difficulty \(newDiff)")
+        print("Increasing difficulty \(newDiff)")
         if newDiff == 1 {
             minFirstMeteorHits = 6
             currentMaxSplitCount = 2
@@ -112,5 +123,10 @@ class GameDirector {
             currentMaxSplitCount = 3
             sceneRef.shootingFrecuency *= 2
         }
+    }
+    
+    func restart() {
+        matchStartTime = 0
+        resetDifficulty()
     }
 }

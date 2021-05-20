@@ -12,7 +12,12 @@ import GameplayKit
 class GameViewController: UIViewController {
     var currentGame: GameScene?
     
-    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet var textField: UITextField!
+    @IBOutlet var startView: UIView!
+    @IBOutlet var gameView: UIView!
+    @IBOutlet var enterNameView: UIView!
+    @IBOutlet var scoreLabel: UILabel!
+    @IBOutlet var enterNameScoreLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +33,8 @@ class GameViewController: UIViewController {
                 currentGame = scene as? GameScene
                 currentGame?.viewController = self
                 
+                resetViewsVisibility()
+                
                 // Present the scene
                 view.presentScene(scene)
             }
@@ -37,6 +44,9 @@ class GameViewController: UIViewController {
             view.showsFPS = true
             view.showsNodeCount = true
         }
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(startTapDetected))
+        startView.addGestureRecognizer(tap)
     }
 
     override var shouldAutorotate: Bool {
@@ -57,5 +67,53 @@ class GameViewController: UIViewController {
     
     func setScore(score: Int) {
         scoreLabel.text = String(score)
+    }
+    
+    func resetViewsVisibility() {
+        gameView.isHidden = true
+        enterNameView.isHidden = true
+        startView.isHidden = false
+    }
+    
+    func toggleStartView(show: Bool) {
+        UtilFunctions.transitionView(startView, show: show, duration: 0.5)
+    }
+    
+    func toggleGameView(show: Bool) {
+        UtilFunctions.transitionView(gameView, show: show, duration: 0.5)
+    }
+    
+    func toggleEnterNameView(show: Bool) {
+        UtilFunctions.transitionView(enterNameView, show: show, duration: 0.5)
+    }
+    
+    @IBAction func submitPressed(_ sender: UIButton) {
+        sender.superview?.endEditing(true)
+    }
+    
+    @IBAction func cancelPressed(_ sender: UIButton) {
+        sender.superview?.endEditing(true)
+        print("Restarting game")
+        restartGameUI()
+    }
+    
+    @IBAction func editingEnd(_ sender: UITextField) {
+        print("editing ended")
+        sender.resignFirstResponder()
+    }
+    
+    @objc func startTapDetected() {
+        print("Starting the game!")
+        toggleGameView(show: true)
+        toggleStartView(show: false)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.currentGame?.gameOver = false
+        }
+    }
+    
+    func restartGameUI() {
+        toggleEnterNameView(show: false)
+        toggleStartView(show: true)
+        currentGame?.restart()
     }
 }

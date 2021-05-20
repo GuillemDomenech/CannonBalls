@@ -37,6 +37,8 @@ class GameScene: SKScene {
     public var audioPlayer: AudioPlayer!
     public var feedbackGenerator: FeedbackGenerator!
     
+    public var gameOver: Bool = true
+    
     
     override func didMove(to view: SKView) {
         self.physicsWorld.contactDelegate = self
@@ -134,24 +136,31 @@ class GameScene: SKScene {
     }
     
     func touchDown(atPoint pos : CGPoint) {
-        //redBall.physicsBody?.applyForce(CGVector(dx: -5000.0, dy: 500.0))
-        posX = pos.x
         isPressingDown = true
+        if gameOver {
+            return
+        }
+        posX = pos.x
+        
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        posX = pos.x
         isPressingDown = true
+        if gameOver {
+            return
+        }
+        posX = pos.x
     }
     
     func touchUp(atPoint pos : CGPoint) {
-        //redBall.physicsBody?.applyForce(CGVector(dx: 2000.0, dy: 500.0))
-        
-        posX = pos.x
         isPressingDown = false
+        if gameOver {
+            return
+        }
+        posX = pos.x
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {        
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
@@ -169,8 +178,12 @@ class GameScene: SKScene {
     
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        // Calculate delta time
         deltaT = currentTime - lastFrameTime
+        
+        if gameOver {
+            return
+        }
         
         gameDirector.update(currentTime: currentTime)
         
@@ -221,6 +234,26 @@ class GameScene: SKScene {
         
         audioPlayer.playShootSound()
         feedbackGenerator.playShootHaptic()
+    }
+    
+    func restart() {
+        // Center player
+        posX = 0
+        lastPosX = 0
+        player.position.x = 0
+        
+        // Remove all meteors in the scene
+        self.children.forEach { (node) in
+            guard let meteor = node as? Meteor else {
+                return
+            }
+            meteor.removeFromParent()
+        }
+        
+        // Reset score
+        score = 0
+        viewController?.setScore(score: score)
+        gameDirector.restart()
     }
     
     func getThisVisibleScreen() -> CGRect {

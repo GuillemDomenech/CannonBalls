@@ -57,7 +57,14 @@ extension GameScene: SKPhysicsContactDelegate {
         
         if oneNodeIsPlayer && oneNodeIsMeteor {
             // Game Over
-            print("Game Over")
+            if !gameOver {
+                gameOver = true
+                audioPlayer.playLooseSound()
+                viewController?.toggleGameView(show: false)
+                viewController?.toggleEnterNameView(show: true)
+                viewController?.enterNameScoreLabel.text = "Score: \(score)"
+                print("Game Over")
+            }
         }
         
         
