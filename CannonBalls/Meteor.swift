@@ -114,6 +114,7 @@ class Meteor: SKSpriteNode {
         }
         
         sceneRef.audioPlayer.playSplitSound()
+        sceneRef.feedbackGenerator.playSplitHaptic()
         
         self.removeFromParent()
     }

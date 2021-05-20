@@ -35,6 +35,7 @@ class GameScene: SKScene {
     public var gameDirector: GameDirector!
     
     public var audioPlayer: AudioPlayer!
+    public var feedbackGenerator: FeedbackGenerator!
     
     
     override func didMove(to view: SKView) {
@@ -117,6 +118,7 @@ class GameScene: SKScene {
         
         gameDirector = GameDirector(_sceneRef: self)
         audioPlayer = AudioPlayer(gameScene: self)
+        feedbackGenerator = FeedbackGenerator()
         viewController?.setScore(score: score)
     }
     
@@ -218,7 +220,7 @@ class GameScene: SKScene {
         addChild(sprite)
         
         audioPlayer.playShootSound()
-        
+        feedbackGenerator.playShootHaptic()
     }
     
     func getThisVisibleScreen() -> CGRect {
