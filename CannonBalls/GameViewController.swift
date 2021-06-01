@@ -16,8 +16,10 @@ class GameViewController: UIViewController {
     @IBOutlet var startView: UIView!
     @IBOutlet var gameView: UIView!
     @IBOutlet var enterNameView: UIView!
+    @IBOutlet var rankingView: UIView!
     @IBOutlet var scoreLabel: UILabel!
     @IBOutlet var enterNameScoreLabel: UILabel!
+    @IBOutlet var rankingLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +74,12 @@ class GameViewController: UIViewController {
     func resetViewsVisibility() {
         gameView.isHidden = true
         enterNameView.isHidden = true
+        rankingView.isHidden = true
         startView.isHidden = false
+        startView.alpha = 1
+        gameView.alpha = 1
+        enterNameView.alpha = 1
+        rankingView.alpha = 1
     }
     
     func toggleStartView(show: Bool) {
@@ -87,8 +94,23 @@ class GameViewController: UIViewController {
         UtilFunctions.transitionView(enterNameView, show: show, duration: 0.5)
     }
     
+    func toggleRankingView(show: Bool) {
+        UtilFunctions.transitionView(rankingView, show: show, duration: 0.5)
+    }
+    
     @IBAction func submitPressed(_ sender: UIButton) {
+        guard let text = textField.text, let currentGame = currentGame else { return }
+        
+        if text.trimmingCharacters(in: .whitespaces).isEmpty { return }
+        
         sender.superview?.endEditing(true)
+        
+        currentGame.rankingManager.addScore(nick: text, score: currentGame.score)
+        
+        toggleEnterNameView(show: false)
+        
+        rankingLabel.text = currentGame.rankingManager.getRankString()
+        toggleRankingView(show: true)
     }
     
     @IBAction func cancelPressed(_ sender: UIButton) {
@@ -110,8 +132,14 @@ class GameViewController: UIViewController {
             self.currentGame?.gameOver = false
         }
     }
+    @IBAction func rankingContinuePressed(_ sender: UIButton) {
+        sender.superview?.endEditing(true)
+        print("Ranking continue")
+        restartGameUI()
+    }
     
     func restartGameUI() {
+        toggleRankingView(show: false)
         toggleEnterNameView(show: false)
         toggleStartView(show: true)
         currentGame?.restart()

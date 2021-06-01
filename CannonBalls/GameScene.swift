@@ -36,6 +36,7 @@ class GameScene: SKScene {
     
     public var audioPlayer: AudioPlayer!
     public var feedbackGenerator: FeedbackGenerator!
+    public var rankingManager: RankingManager!
     
     public var gameOver: Bool = true
     
@@ -121,6 +122,7 @@ class GameScene: SKScene {
         gameDirector = GameDirector(_sceneRef: self)
         audioPlayer = AudioPlayer(gameScene: self)
         feedbackGenerator = FeedbackGenerator()
+        rankingManager = RankingManager()
         viewController?.setScore(score: score)
     }
     
