@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		34140A6A2655BFE0008482D5 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 34140A692655BFE0008482D5 /* GameScene.sks */; };
+		340A2C6D266FD91000E21DFF /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 340A2C6C266FD91000E21DFF /* GameScene.sks */; };
 		343F0C4C263C44380032EFEC /* Meteor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343F0C4B263C44380032EFEC /* Meteor.swift */; };
 		3452F1DC2655BC6B00150668 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3452F1DB2655BC6B00150668 /* AudioPlayer.swift */; };
 		34560FEE263B3A0100DC52E5 /* CollisionTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34560FED263B3A0100DC52E5 /* CollisionTypes.swift */; };
@@ -31,7 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		34140A692655BFE0008482D5 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = GameScene.sks; path = ../../../../.Trash/GameScene.sks; sourceTree = "<group>"; };
+		340A2C6C266FD91000E21DFF /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		343F0C4B263C44380032EFEC /* Meteor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meteor.swift; sourceTree = "<group>"; };
 		3452F1DB2655BC6B00150668 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		34560FED263B3A0100DC52E5 /* CollisionTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionTypes.swift; sourceTree = "<group>"; };
@@ -110,8 +110,8 @@
 				34A788A226558EC300EDE0BA /* Sounds */,
 				34E0BBC02628B3AA00989BD2 /* AppDelegate.swift */,
 				34791B782628C45200B9F21D /* Utils */,
+				340A2C6C266FD91000E21DFF /* GameScene.sks */,
 				34E0BBC42628B3AA00989BD2 /* Actions.sks */,
-				34140A692655BFE0008482D5 /* GameScene.sks */,
 				34E0BBC62628B3AA00989BD2 /* GameScene.swift */,
 				34560FF0263B676100DC52E5 /* PhysicsContacts.swift */,
 				34E0BBC82628B3AA00989BD2 /* GameViewController.swift */,
@@ -190,7 +190,7 @@
 				34E0BBCC2628B3AA00989BD2 /* Main.storyboard in Resources */,
 				34A788A426558F7E00EDE0BA /* shoot.mp3 in Resources */,
 				34E0BBCE2628B3AC00989BD2 /* Assets.xcassets in Resources */,
-				34140A6A2655BFE0008482D5 /* GameScene.sks in Resources */,
+				340A2C6D266FD91000E21DFF /* GameScene.sks in Resources */,
 				34DD60A32655B42E005F7230 /* split.mp3 in Resources */,
 				34E0BBC52628B3AA00989BD2 /* Actions.sks in Resources */,
 			);
