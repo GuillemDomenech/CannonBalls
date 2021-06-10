@@ -60,20 +60,7 @@ class GameScene: SKScene {
         ceiling.name = "Ceiling"
         self.addChild(ceiling)
         
-        //Ball collision test
-        redBall = SKShapeNode(circleOfRadius: 20)
-        redBall.fillColor = .red;
-        redBall.position = CGPoint(x: 0, y: self.size.height * 0.9)
-        redBall.physicsBody = SKPhysicsBody(circleOfRadius: 20)
-        redBall.physicsBody?.categoryBitMask = CollisionTypes.meteor.rawValue
-        redBall.physicsBody?.collisionBitMask = CollisionTypes.ground.rawValue |
-            CollisionTypes.wall.rawValue | CollisionTypes.player.rawValue
-        redBall.physicsBody?.contactTestBitMask = CollisionTypes.ground.rawValue | CollisionTypes.wall.rawValue | CollisionTypes.player.rawValue | CollisionTypes.wall.rawValue
-        redBall.physicsBody?.applyForce(CGVector(dx: -5000.0, dy: 0.0))
-        redBall.name = "Meteor"
-        
-        // Background clouds
-        
+        // Background clouds        
         let clouds1 = UIImage(named: "clouds1")!
         let clouds1Scroller = InfiniteScrollingBackground(images: [clouds1, clouds1], scene: self, scrollDirection: .right, transitionSpeed: 2.5, positionY: frame.height*0.65)
         clouds1Scroller?.sprites.forEach {
